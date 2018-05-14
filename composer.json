@@ -1,0 +1,34 @@
+{
+    "name": "malamalca/LilTaxRegisters",
+    "description": "LilTaxRegisters plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "git@gitlab.com:malamalca/fiscal-php.git"
+      },
+      {
+            "type": "vcs",
+            "url": "https://github.com/malamalca/xmlseclibs.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "cakephp/cakephp": ">=3.3.2 <4.0.0",
+        "malamalca/fiscal-php": "dev-master#v1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "LilTaxRegisters\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LilTaxRegisters\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}
