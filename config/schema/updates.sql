@@ -44,11 +44,11 @@ CREATE TABLE `invoices_taxconfirmations` (
  PRIMARY KEY (`id`)
 );
 
-ALTER TABLE `invoices_counters` ADD `tax_confirmation` tinyint(1) NOT NULL DEFAULT '0' AFTER `tpl_footer_id`; 
-ALTER TABLE `invoices_counters` ADD `business_premise_id` CHAR(36) NULL AFTER `tax_confirmation`; 
-ALTER TABLE `invoices_counters` ADD `device_no` CHAR(20) NULL AFTER `business_premise_id`; 
+ALTER TABLE `invoices_counters` ADD `tax_confirmation` tinyint(1) NOT NULL DEFAULT '0' AFTER `tpl_footer_id`;
+ALTER TABLE `invoices_counters` ADD `business_premise_id` CHAR(36) NULL AFTER `tax_confirmation`;
+ALTER TABLE `invoices_counters` ADD `device_no` CHAR(20) NULL AFTER `business_premise_id`;
 
-ALTER TABLE `users` ADD `tax_no` CHAR(9) NULL AFTER `email`; 
-ALTER TABLE `users` ADD `cert_p12` TEXT NULL AFTER `tax_no`; 
+ALTER TABLE `users` ADD `tax_no` CHAR(9) NULL AFTER `email`;
+ALTER TABLE `users` ADD `cert_p12` TEXT NULL AFTER `tax_no`;
 
-ALTER TABLE `companies` ADD `tax_no` CHAR(9) NULL AFTER `city`; 
+ALTER TABLE `companies` ADD `tax_no` CHAR(9) NULL AFTER `city`;

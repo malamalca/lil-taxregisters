@@ -124,7 +124,7 @@ class LilTaxRegistersEvents implements EventListenerInterface
             if ($counterId = $controller->request->getQuery('filter.counter')) {
                 $CountersTable = TableRegistry::get('LilInvoices.InvoicesCounters');
                 if ($CountersTable->exists(['id' => $counterId, 'tax_confirmation' => true])) {
-                    $session = $controller->request->session();
+                    $session = $controller->request->getSession();
                     $p12 = $session->read('LilTaxRegisters.P12');
 
                     if (!$p12 && !$controller->Auth->user('cert_p12')) {
@@ -292,6 +292,19 @@ class LilTaxRegistersEvents implements EventListenerInterface
                         ['label' => __d('lil_tax_registers', 'ZOI') . ':', 'html' => $invoicesTaxconfirmation->zoi],
                         ['label' => __d('lil_tax_registers', 'EOR') . ':', 'html' => $invoicesTaxconfirmation->eor],
                         ['label' => __d('lil_tax_registers', 'QR') . ':', 'html' => sprintf('<img src="data:image/png;base64,%s" />', $inlineQrImage)],
+                    ]
+                ];
+            } else {
+                $view = $event->getSubject();
+                $data->panels['taxrH.panel'] = [
+                    'lines' => [
+                        ['label' => __d('lil_tax_registers', 'Status') . ':', 'html' => __d('lil_tax_registers', 'Unconfirmed')],
+                        ['label' => __d('lil_tax_registers', 'Action') . ':', 'html' => $view->Html->link(__d('lil_tax_registers', 'Confirm'), [
+                            'plugin' => 'LilTaxRegisters',
+                            'controller' => 'TaxRegisters',
+                            'action' => 'confirm',
+                            $data->entity->id
+                        ])],
                     ]
                 ];
             }

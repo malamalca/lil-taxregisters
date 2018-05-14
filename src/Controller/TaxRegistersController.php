@@ -1,6 +1,7 @@
 <?php
 namespace LilTaxRegisters\Controller;
 
+use Cake\ORM\TableRegistry;
 use LilTaxRegisters\Controller\AppController;
 use LilTaxRegisters\Form\PKPasswordForm;
 
@@ -22,6 +23,7 @@ class TaxRegistersController extends AppController
     {
         switch ($this->request->getParam('action')) {
             case 'password':
+            case 'confirm':
                 return true;
 
             default:
@@ -43,6 +45,31 @@ class TaxRegistersController extends AppController
         }
 
         $this->set(compact('PKPassword'));
+    }
+
+    /**
+     * Confirm invoice
+     *
+     * @return \Cake\Network\Response|null
+     */
+    public function confirm($invoiceId)
+    {
+        $Invoices = TableRegistry::get('LilInvoices.Invoices');
+
+        if ($invoice = $Invoices->get($invoiceId)) {
+            $InvoicesCounters = TableRegistry::get('LilInvoices.InvoicesCounters');
+            $InvoicesTaxconfirmations = TableRegistry::get('LilTaxRegisters.InvoicesTaxconfirmations');
+            $counter = $InvoicesCounters->get($invoice->counter_id);
+            if ($counter->tax_confirmation) {
+                $session = $this->request->getSession();
+                $p12 = $session->read('LilTaxRegisters.P12');
+                $p12Password = $session->read('LilTaxRegisters.PKPassword');
+
+                $InvoicesTaxconfirmations->signAndSend($invoice->id, $this->Auth->user('company'), $p12, $p12Password);
+
+                $this->redirect(['plugin' => 'LilInvoices', 'controller' => 'Invoices', 'action' => 'view', $invoice->id]);
+            }
+        }
     }
 
 }

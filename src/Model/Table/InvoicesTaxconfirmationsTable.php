@@ -107,6 +107,10 @@ class InvoicesTaxconfirmationsTable extends Table
         $invoice = $Invoices->get($invoiceId, ['contain' => ['InvoicesCounters',
             'Buyers', 'InvoicesItems']]);
 
+        if (empty($invoice->user_id)) {
+            return false;
+        }
+
         $UsersTable = TableRegistry::get('Lil.Users');
         $user = $UsersTable->get($invoice->user_id);
 
@@ -130,6 +134,8 @@ class InvoicesTaxconfirmationsTable extends Table
         // control char
         $sum = 0;
         $len = strlen($invoicesTaxconfirmation->qr);
+
+
         for ($i = 0; $i < $len; $i++) {
             $sum += $invoicesTaxconfirmation->qr[$i];
         }
